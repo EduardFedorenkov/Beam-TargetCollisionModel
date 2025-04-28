@@ -1,0 +1,42 @@
+%% Set constants
+% Physical consts
+c = 3 * 10^10;                                      % Speed of light [cm/s]
+eVtoErg = 1.6e-12;                                  % Convertion coef from [eV] to [Erg]
+m = 938.27 * 10^6;                                  % Mass of proton [eV]
+eps = 3 / sqrt(2);                                  % 3-siga maxwell range
+
+% Plasma parameters
+mp = 2 * m;                                         % Ions mass [eV]
+np = 1e14;                                          % Ions density [cm^{-3}]
+Tp = 50;                                            % Ions temperature [eV]
+VTp = sqrt(2 * Tp / mp) * c;                        % Ions termal vel [cm /s]
+Vp = [0, sqrt(2 * 200 / mp) * c, 0];                % Ions vel [cm / s] (vectro size of 3!!!)
+
+% Gas parameters
+mg = 4 * m;                                         % Gas mass [eV]
+ng = 1e14;                                          % Gas dencity [cm^{-3}]
+Tg = 1;                                             % Gas temperature [eV]
+VTg = sqrt(2 * Tg / mg) * c;                        % Gas termal vel [cm /s]
+
+% GAS-ION Cross section
+diffCrossSec = 1e-16 / (4 * pi);                    % HH collisions [cm^2]
+
+%% Set model parameters
+Nv = 11;
+Nangle = 50;
+vGrid = linspace(-2 * eps * VTg, 2 * eps * VTg, Nv);
+
+%% Begin computation
+fg = GenereteInitialDistribution(ng, VTg, vGrid, Nv);
+
+[nu1, nu2] = GetNuMat(mg, mp, vGrid, diffCrossSec, np, VTp, Vp, Nv, Nangle);
+
+st = GetSt(nu1, nu2, fg, Nv);
+
+%% Plot results
+pcolor(vGrid, vGrid, st(:,:,6)');
+shading flat;
+shading interp;
+title('St, v_z = 0');
+xlabel('v_x [cm / s]'); 
+ylabel('v_y [cm / s]');
