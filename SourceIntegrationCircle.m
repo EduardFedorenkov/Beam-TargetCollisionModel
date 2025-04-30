@@ -12,7 +12,7 @@ if (dist > Rp)
     isIntersect = false;
 else 
     isIntersect = true;
-    circle.center = Vp - dist * n;
+    circle.center = Vp - (dot(n, Vp) + d) / normN^2 * n;
     circle.r = sqrt(Rp^2 - dist^2);
     
     % compute basis on plane
