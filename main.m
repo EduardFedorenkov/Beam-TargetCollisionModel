@@ -19,19 +19,20 @@ Tg = 1;                                             % Gas temperature [eV]
 VTg = sqrt(2 * Tg / mg) * c;                        % Gas termal vel [cm /s]
 
 % GAS-ION Cross section
-diffCrossSec = 1e-16 / (4 * pi);                    % HH collisions [cm^2]
+diffCrossSection = 1e-16 / (4 * pi);                % HH collisions [cm^2]
+crossSection = 1e-16;
 
 %% Set model parameters
 Nv = 11;
-Nangle = 50;
 vGrid = linspace(-2 * eps * VTg, 2 * eps * VTg, Nv);
 
 %% Begin computation
 fg = GenereteInitialDistribution(ng, VTg, vGrid, Nv);
 
-[nu1, nu2] = GetNuMat(mg, mp, vGrid, diffCrossSec, np, VTp, Vp, Nv, Nangle);
+nuSink = GetNuSink(Nv, vGrid, np, VTp, Vp, crossSection);
+nuSource = GetNuSource(Nv, vGrid, mg, mp, np, VTp, Vp, diffCrossSection);
 
-st = GetSt(nu1, nu2, fg, Nv);
+st = GetSt(nuSink, nuSource, fg, Nv);
 
 %% Plot results
 pcolor(vGrid, vGrid, st(:,:,6)');

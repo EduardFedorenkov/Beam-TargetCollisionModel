@@ -1,5 +1,5 @@
-function St = GetSt(nu1, nu2, f, Nv)
-St_tmp = -sum(nu1, 2) .* f(:) + nu2' * f(:);
+function St = GetSt(nuSink, nuSource, f, Nv)
+St_tmp = -nuSink .* f(:) + nuSource * f(:);
 St = reshape(St_tmp, [Nv, Nv, Nv]);
 end
 
