@@ -7,6 +7,7 @@ d = (mg + mp) / (2 * mg) * normN^2 - dot(n, Vj);
 
 % compute distance between Vp and the plane
 dist = abs(dot(n, Vp) + d) / normN;
+circle = struct();
 if (dist > Rp)
     % Sphere don't intersect the plane
     isIntersect = false;
