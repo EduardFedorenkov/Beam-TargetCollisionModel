@@ -8,5 +8,5 @@ normUji = norm(Uji);
 
 % det(J) Jacobian
 J = 1 - M/mp + 2 * mp / M * normU.^2 / normUji^2;
-f = J .* normU .* TargetDistributionFunction(Vpx, Vpy, Vpz, np, VTp, Vp);
+f = normUji ./ normU.^2 .* J .* TargetDistributionFunction(Vpx, Vpy, Vpz, np, VTp, Vp);
 end

@@ -25,12 +25,13 @@ crossSection = 1e-16;
 %% Set model parameters
 Nv = 11;
 vGrid = linspace(-2 * eps * VTg, 2 * eps * VTg, Nv);
+dv = vGrid(2) - vGrid(1);
 
 %% Begin computation
 fg = GenereteInitialDistribution(ng, VTg, vGrid, Nv);
 
 nuSink = GetNuSink(Nv, vGrid, np, VTp, Vp, crossSection);
-nuSource = GetNuSource(Nv, vGrid, mg, mp, np, VTp, Vp, diffCrossSection);
+nuSource = GetNuSource(Nv, vGrid, mg, mp, np, VTp, Vp, diffCrossSection) * dv^3;
 
 st = GetSt(nuSink, nuSource, fg, Nv);
 
