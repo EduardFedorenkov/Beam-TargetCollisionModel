@@ -10,7 +10,7 @@ mp = 2 * m;                                         % Ions mass [eV]
 np = 1e14;                                          % Ions density [cm^{-3}]
 Tp = 50;                                            % Ions temperature [eV]
 VTp = sqrt(2 * Tp / mp) * c;                        % Ions termal vel [cm /s]
-Vp = [0, sqrt(2 * 200 / mp) * c, 0];                % Ions vel [cm / s] (vectro size of 3!!!)
+Vp = [0, sqrt(2 * 20 / mp) * c, 0];                % Ions vel [cm / s] (vectro size of 3!!!)
 
 % Gas parameters
 mg = 4 * m;                                         % Gas mass [eV]
@@ -35,10 +35,30 @@ nuSource = GetNuSource(Nv, vGrid, mg, mp, np, VTp, Vp, diffCrossSection) * dv^3;
 
 st = GetSt(nuSink, nuSource, fg, Nv);
 
+%% Evolution of fg over time
+Nt = 300;
+dt = 1e-6;
+f = fg;
+for t = 1:Nt
+    f = SemiImplicitTimeScheme(f, nuSource, nuSink, dt);
+end
+f = reshape(f, [Nv, Nv, Nv]);
+
 %% Plot results
-pcolor(vGrid, vGrid, st(:,:,6)');
+figure(1);
+pcolor(vGrid, vGrid, fg(:,:,6)');
 shading flat;
 shading interp;
-title('St, v_z = 0');
+title('Initial distribution, v_z = 0');
 xlabel('v_x [cm / s]'); 
+ylabel('v_y [cm / s]');
+
+strTimeEnd = num2str(dt * Nt);
+strNt = num2str(Nt);
+figure(2);
+pcolor(vGrid, vGrid, f(:,:,6)');
+shading flat;
+shading interp;
+title(['f(t = ', strTimeEnd, ' sec ', strNt, ' time steps), v_z = 0']);
+xlabel('v_x [cm / s]');
 ylabel('v_y [cm / s]');
