@@ -10,7 +10,7 @@ if (isIntersect)
     circle.center(2) + r .* cos(t) * circle.ex(2) + r .* sin(t) * circle.ey(2), ...
     circle.center(3) + r .* cos(t) * circle.ex(3) + r .* sin(t) * circle.ey(3), ...
     M, mp, Vi, Vj, np, VTp, Vp) .* r;
-    sourceFreq = M / (2 * mp) * diffCrossSection * integral2(integrand, 0, 2*pi, 0, circle.r);
+    sourceFreq = M / (2 * mp) * diffCrossSection * integral2(integrand, 0, 2*pi, 0, circle.r, 'AbsTol', 1e-3, 'RelTol', 1e-3, 'Method', 'tiled');
 else
     sourceFreq = 0;
 end

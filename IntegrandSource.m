@@ -7,6 +7,6 @@ Uji = Vj - Vi;
 normUji = norm(Uji);
 
 % det(J) Jacobian
-J = 1 - M/mp + 2 * mp / M * normU.^2 / normUji^2;
+J = abs(1 - M/mp + 2 * mp / M * normU.^2 / normUji^2);
 f = normUji ./ normU.^2 .* J .* TargetDistributionFunction(Vpx, Vpy, Vpz, np, VTp, Vp);
 end
