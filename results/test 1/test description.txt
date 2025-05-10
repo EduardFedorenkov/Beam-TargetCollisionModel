@@ -1,0 +1,18 @@
+Test 1
+
+% Plasma parameters
+mp = m;                                             % Ions mass [eV]
+np = 1e14;                                          % Ions density [cm^{-3}]
+Tp = 3;                                             % Ions temperature [eV]
+VTp = sqrt(2 * Tp / mp) * c;                        % Ions termal vel [cm /s]
+Vp = [0, 0, 0];                                     % Ions vel [cm / s] (vectro size of 3!!!)
+
+% Gas parameters
+mg = m;                                             % Gas mass [eV]
+ng = 1e14;                                          % Gas dencity [cm^{-3}]
+Tg = 1;                                             % Gas temperature [eV]
+VTg = sqrt(2 * Tg / mg) * c;                        % Gas termal vel [cm /s]
+
+% GAS-ION Cross section
+diffCrossSection = 1e-16 / (4 * pi);                % HH collisions [cm^2]
+crossSection = 1e-16;

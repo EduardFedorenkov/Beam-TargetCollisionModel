@@ -1,8 +1,8 @@
-function nuSink = GetNuSink(Nv, vGrid, np, VTp, Vp, crossSection)
-nuSink = zeros(Nv*Nv*Nv, 1);
-for i = 1:Nv*Nv*Nv
-    [ki, li, mi] = ind2sub([Nv, Nv, Nv], i);
-    Vi = [vGrid(ki), vGrid(li), vGrid(mi)];
+function nuSink = GetNuSink(Vi_list, np, VTp, Vp, crossSection)
+Ntotal = size(Vi_list, 1);
+nuSink = zeros(Ntotal, 1);
+for i = 1:Ntotal
+    Vi = Vi_list(i, :);
     
     vxMin = Vp(1) - 4 / sqrt(2) * VTp;
     vyMin = Vp(2) - 4 / sqrt(2) * VTp;

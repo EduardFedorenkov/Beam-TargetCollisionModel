@@ -1,16 +1,19 @@
-function nuSource = GetNuSource(Nv, vGrid, mg, mp, np, VTp, Vp, diffCrossSection)
-nuSource = zeros(Nv*Nv*Nv, Nv*Nv*Nv);
-for i = 1:Nv*Nv*Nv
-    [ki, li, mi] = ind2sub([Nv, Nv, Nv], i);
-    Vi = [vGrid(ki), vGrid(li), vGrid(mi)];
-    for j = 1: Nv*Nv*Nv
-        [kj, lj, mj] = ind2sub([Nv, Nv, Nv], j);
-        Vj = [vGrid(kj), vGrid(lj), vGrid(mj)];
-
-        if (i ~= j)
-            nuSource(i, j) = GetSourceFreq(mg, mp, Vi, Vj, np, VTp, Vp, diffCrossSection);
+function nuSource = GetNuSource(Vi_list, normUji_matrix, mg, mp, np, VTp, Vp, diffCrossSection)
+Ntotal = size(Vi_list, 1);
+nuSource = zeros(Ntotal, Ntotal);
+for i = 1:Ntotal
+    Vi = Vi_list(i, :);
+    nuSourceRow = zeros(1, Ntotal);
+    for j = 1: Ntotal
+        if i == j
+            continue;
         end
+        Vj = Vi_list(j, :);
+        normUji = normUji_matrix(i, j);
+
+        nuSourceRow(j) = GetSourceFreq(mg, mp, Vi, Vj, normUji, np, VTp, Vp, diffCrossSection);
     end
+    nuSource(i, :) = nuSourceRow;
 end
 end
 
