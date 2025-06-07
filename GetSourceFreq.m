@@ -1,7 +1,7 @@
-function sourceFreq = GetSourceFreq(mg, mp, Vi, Vj, normUji, np, VTp, Vp, diffCrossSection)
+function sourceFreq = GetSourceFreq(mg, mp, Vi, Vj, normUji, np, VTp, Vp, Rp, diffCrossSection)
 % for now Rp = 4VTp. It suppose that fp - is the Maxwellian distribution
-% function. 4 / sqrt(2) > 3 / sqrt(2) - 3 sigma Gause distrubution
-[isIntersect, circle] = SourceIntegrationCircle(mg, mp, Vi, Vj, Vp, 4 / sqrt(2) * VTp);
+% Rp > 3 / sqrt(2) - 3 sigma Gause distrubution
+[isIntersect, circle] = SourceIntegrationCircle(mg, mp, Vi, Vj, Vp, Rp);
 if (isIntersect)
     M = mg + mp;
 

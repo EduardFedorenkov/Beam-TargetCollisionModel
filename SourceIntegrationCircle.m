@@ -3,7 +3,7 @@ function [isIntersect, circle] = SourceIntegrationCircle(mg, mp, Vi, Vj, Vp, Rp)
 % compute plane parameters "n" and "d"
 n = Vj - Vi;
 normN = norm(n);
-d = (mg + mp) / (2 * mg) * normN^2 - dot(n, Vj);
+d = (mg + mp) / (2 * mp) * normN^2 - dot(n, Vj);
 
 % compute distance between Vp and the plane
 dist = abs(dot(n, Vp) + d) / normN;

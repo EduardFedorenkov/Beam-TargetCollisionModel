@@ -11,6 +11,7 @@ np = 1e14;                                          % Ions density [cm^{-3}]
 Tp = 3;                                             % Ions temperature [eV]
 VTp = sqrt(2 * Tp / mp) * c;                        % Ions termal vel [cm /s]
 Vp = [0, 0, 0];                                     % Ions vel [cm / s] (vectro size of 3!!!)
+Rp = 4 / sqrt(2) * VTp;
 
 % Gas parameters
 mg = m;                                             % Gas mass [eV]
@@ -42,8 +43,8 @@ diff = Vj_3d - Vi_3d;
 normUji_matrix = sqrt(sum(diff.^2, 3));
 
 %% Begin computation
-nuSource = GetNuSource(Vi_list, normUji_matrix, mg, mp, np, VTp, Vp, diffCrossSection) * dv^3;
-nuSink = GetNuSink(Vi_list, np, VTp, Vp, crossSection);
+nuSource = GetNuSource(Vi_list, normUji_matrix, mg, mp, np, VTp, Vp, Rp, diffCrossSection) * dv^3;
+nuSink = GetNuSink(Vi_list, np, VTp, Vp, Rp, crossSection);
 
 fg = GenereteInitialDistribution(ng, VTg, vGrid, Nv);
 
@@ -64,6 +65,7 @@ dt = 1e-6;
 n = zeros(Nt+1, 1);
 V = zeros(Nt+1, 3);
 T = zeros(Nt+1, 1);
+betaArray = zeros(Nt, 1);
 
 n(1) = ComputeDensity(vGrid, fg);
 V(1,:) = ComputeVel(vGrid, fg);
@@ -71,7 +73,8 @@ T(1) = ComputeTemperature(mg, c, vGrid, fg);
 
 f = fg;
 for t = 1:Nt
-    f = SemiImplicitTimeScheme(f, nuSource, nuSink, dt);
+    betaArray(t) = GetSt_for_test(nuSink, nuSource, f);
+    f = SemiImplicitTimeScheme(f, betaArray(t) * nuSource, nuSink, dt);
 
     n(t + 1) = ComputeDensity(vGrid, f);
     V(t + 1, :) = ComputeVel(vGrid, f);
@@ -111,3 +114,9 @@ plot(time, T);
 title('Gas Temperature');
 xlabel('time [s]');
 ylabel('T [eV]');
+
+figure(6)
+plot(time(2:end), betaArray);
+title('beta');
+xlabel('time [s]');
+ylabel('beta');
