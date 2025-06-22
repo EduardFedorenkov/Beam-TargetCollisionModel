@@ -17,4 +17,3 @@ for i = 1:Ntotal
     nuSink(i) = crossSection * integral3(integrand, vxMin, vxMax, vyMin, vyMax, vzMin, vzMax);
 end
 end
-

@@ -33,6 +33,8 @@ assert(isIntersect == true, "SourceIntegrationCircle return no" + ...
     "intercection with plane!");
 assert(circle.r <= Rp + eps, "circle radius r > Rp!");
 assert(dot(circle.ex, circle.ey) < 3 * eps, "ex is not orthogonal to ey!");
+assert(dot(circle.ex, circle.ex) < 1 + 3 * eps, "|ex| is not 1!");
+assert(dot(circle.ey, circle.ey) < 1 + 3 * eps, "|ex| is not 1!");
 
 % Generate edge of thr circle
 t = linspace(0, 2 * pi, 100);
