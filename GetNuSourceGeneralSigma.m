@@ -1,4 +1,4 @@
-function nuSource = GetNuSource(Vi_list, normUji_matrix, mg, mp, np, VTp, Vp, Rp, diffCrossSection)
+function nuSource = GetNuSourceGeneralSigma(Vi_list, normUji_matrix, mg, mp, np, VTp, Vp, Rp)
 Ntotal = size(Vi_list, 1);
 nuSource = zeros(Ntotal, Ntotal);
 for i = 1:Ntotal
@@ -11,7 +11,7 @@ for i = 1:Ntotal
         Vj = Vi_list(j, :);
         normUji = normUji_matrix(i, j);
 
-        nuSourceRow(j) = GetSourceFreq(mg, mp, Vi, Vj, normUji, np, VTp, Vp, Rp, diffCrossSection);
+        nuSourceRow(j) = GetSourceFreqGeneralSigma(mg, mp, Vi, Vj, normUji, np, VTp, Vp, Rp);
     end
     nuSource(i, :) = nuSourceRow;
 end

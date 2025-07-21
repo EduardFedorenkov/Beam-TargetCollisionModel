@@ -3,14 +3,14 @@
 c = 2.99792458e10;                                  % Speed of light [cm/s]
 eVtoErg = 1.602176634e-12;                          % Convertion coef from [eV] to [Erg]
 m = 938.272e6;                                      % Mass of proton [eV]
-eps = 3 / sqrt(2);                                  % 3-siga maxwell range
 
 % Plasma parameters
 mp = m;                                             % Ions mass [eV]
 np = 1e14;                                          % Ions density [cm^{-3}]
-Tp = 3;                                             % Ions temperature [eV]
+Tp = 1;                                             % Ions temperature [eV]
 VTp = sqrt(2 * Tp / mp) * c;                        % Ions termal vel [cm /s]
 Vp = [0, 0, 0];                                     % Ions vel [cm / s] (vectro size of 3!!!)
+Rp = 5 / sqrt(2) * VTp;                             % 5-siga maxwell range
 
 % Gas parameters
 mg = m;                                             % Gas mass [eV]
@@ -24,7 +24,8 @@ crossSection = 1e-16;
 
 %% Set model parameters
 Nv = 11;
-vGrid = linspace(-eps * VTp, eps * VTp, Nv);
+Ntotal = Nv^3;
+vGrid = linspace(-Rp, Rp, Nv);
 dv = vGrid(2) - vGrid(1);
 
 [Vx, Vy, Vz] = ndgrid(vGrid, vGrid, vGrid);
@@ -32,7 +33,15 @@ dv = vGrid(2) - vGrid(1);
 %% Begin computation
 fg = GenereteInitialDistribution(ng, VTg, vGrid, Nv);
 
-nuSink = GetNuSink(Nv, vGrid, np, VTp, Vp, crossSection);
+% Precompute all velocity vectors
+Vi_list = zeros(Ntotal, 3);
+for i = 1:Ntotal
+    [ki, li, mi] = ind2sub([Nv, Nv, Nv], i);
+    Vi_list(i, :) = [vGrid(ki), vGrid(li), vGrid(mi)];
+end
+
+% nuSink = GetNuSink(Vi_list, np, VTp, Vp, Rp, crossSection);
+nuSink = GetNuSinkCastomIntegration(Vi_list, Nv, np, VTp, Vp, Rp, crossSection);
 
 stSink = nuSink .* fg(:);
 stSink = reshape(stSink, [Nv, Nv, Nv]);
