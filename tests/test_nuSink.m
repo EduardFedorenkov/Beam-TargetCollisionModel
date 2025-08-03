@@ -7,7 +7,7 @@ m = 938.272e6;                                      % Mass of proton [eV]
 % Plasma parameters
 mp = m;                                             % Ions mass [eV]
 np = 1e14;                                          % Ions density [cm^{-3}]
-Tp = 1;                                             % Ions temperature [eV]
+Tp = 5;                                             % Ions temperature [eV]
 VTp = sqrt(2 * Tp / mp) * c;                        % Ions termal vel [cm /s]
 Vp = [0, 0, 0];                                     % Ions vel [cm / s] (vectro size of 3!!!)
 Rp = 5 / sqrt(2) * VTp;                             % 5-siga maxwell range
@@ -15,7 +15,7 @@ Rp = 5 / sqrt(2) * VTp;                             % 5-siga maxwell range
 % Gas parameters
 mg = m;                                             % Gas mass [eV]
 ng = 1e14;                                          % Gas dencity [cm^{-3}]
-Tg = 1;                                             % Gas temperature [eV]
+Tg = 5;                                             % Gas temperature [eV]
 VTg = sqrt(2 * Tg / mg) * c;                        % Gas termal vel [cm /s]
 
 % GAS-ION Cross section
@@ -43,13 +43,13 @@ end
 % nuSink = GetNuSink(Vi_list, np, VTp, Vp, Rp, crossSection);
 nuSink = GetNuSinkCastomIntegration(Vi_list, Nv, np, VTp, Vp, Rp, crossSection);
 
-stSink = nuSink .* fg(:);
+stSink = nuSink;
 stSink = reshape(stSink, [Nv, Nv, Nv]);
 
 V = sqrt(Vx.^2 + Vy.^2 + Vz.^2) / VTp;
 
-stSinkTest = crossSection * np * VTp * ( ( 1 + 2 * V.^2 ) ./ (2 * V ) .* erf(V) + 1/sqrt(pi) * exp(-V.^2) ) .* fg;
-stSinkTest(isnan(stSinkTest)) = 2 / sqrt(pi) * crossSection * np * VTp * fg(isnan(stSinkTest)); % in zero point
+stSinkTest = crossSection * np * VTp * ( ( 1 + 2 * V.^2 ) ./ (2 * V ) .* erf(V) + 1/sqrt(pi) * exp(-V.^2) );
+stSinkTest(isnan(stSinkTest)) = 2 / sqrt(pi) * crossSection * np * VTp; % in zero point
 
 test = (stSink - stSinkTest) ./ stSinkTest * 100;
 

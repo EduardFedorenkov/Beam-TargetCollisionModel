@@ -1,4 +1,0 @@
-1. Nv = 11; VgridMax = 3/sqrt(2)VTp;
-2. Nv = 15; VgridMax = 3/sqrt(2)VTp;
-3. Nv = 11; VgridMax = 5/sqrt(2)VTp;
-4. Nv = 15; VgridMax = 5/sqrt(2)VTp;

@@ -7,11 +7,15 @@ vGridz = linspace(Vp(3) - Rp, Vp(3) + Rp, Nv);
 dv = vGridx(2) - vGridx(1);
 [Vx, Vy, Vz] = ndgrid(vGridx, vGridy, vGridz);
 
+mask = (Vx - Vp(1)).^2 + (Vy - Vp(2)).^2 + (Vz - Vp(3)).^2 <= Rp^2;
+
 for i = 1:Ntotal
     Vi = Vi_list(i, :);
 
     integrand = sqrt( (Vi(1) - Vx).^2 + (Vi(2) - Vy).^2 + (Vi(3) - Vz).^2 ) .* ...
         TargetDistributionFunction(Vx, Vy, Vz, np, VTp, Vp);
+
+    integrand(~mask) = 0;
 
     nuSink(i) = sum(integrand, 'all');
 end

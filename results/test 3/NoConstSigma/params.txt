@@ -1,0 +1,4 @@
+Tp = 100eV
+np = 1e13
+Tg = 25 eV
+Vp - 500eV
